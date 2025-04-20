@@ -482,7 +482,14 @@ require('lazy').setup({
 
       vim.keymap.set('n', '<C-g>', changed_files, { desc = 'Changed files vs default branch', noremap = true, silent = true })
       vim.keymap.set('n', '<leader>gc', changed_files, { desc = '[G]it [C]hanged files vs default', noremap = true, silent = true })
+      vim.keymap.set('n', '<C-f>', function()
+        builtin.live_grep()
+      end, { noremap = true, silent = true, desc = 'Live grep in project' })
 
+      -- Ctrl+L = fuzzy search current buffer
+      vim.keymap.set('n', '<C-l>', function()
+        builtin.current_buffer_fuzzy_find()
+      end, { noremap = true, silent = true, desc = 'Fuzzy find in current buffer' })
       -- Slightly advanced example of overriding default behavior and theme
 
       vim.keymap.set('n', '<leader>/', function()
