@@ -486,6 +486,10 @@ require('lazy').setup({
         builtin.live_grep()
       end, { noremap = true, silent = true, desc = 'Live grep in project' })
 
+      vim.keymap.set('n', '<C-o>', function()
+        require('telescope.builtin').current_buffer_fuzzy_find()
+      end, { desc = 'Fuzzy search in current buffer', noremap = true, silent = true })
+
       -- Ctrl+L = fuzzy search current buffer
       vim.keymap.set('n', '<C-l>', function()
         builtin.current_buffer_fuzzy_find()
@@ -928,28 +932,6 @@ require('lazy').setup({
       signature = { enabled = true },
     },
   },
-
-  -- { -- You can easily change to a different colorscheme.
-  --   -- Change the name of the colorscheme plugin below, and then
-  --   -- change the command in the config to whatever the name of that colorscheme is.
-  --   --
-  --   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-  --   'morhetz/gruvbox',
-  --   priority = 1000, -- Make sure to load this before all the other start plugins.
-  --   config = function()
-  --     -- ---@diagnostic disable-next-line: missing-fields
-  --     -- require('tokyonight').setup {
-  --     --   styles = {
-  --     --     comments = { italic = false }, -- Disable italics in comments
-  --     --   },
-  --     -- }
-  --
-  --     -- Load the colorscheme here.
-  --     -- Like many other themes, this one has different styles, and you could load
-  --     -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-  --     vim.cmd.colorscheme 'gruvbox'
-  --   end,
-  -- },
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
