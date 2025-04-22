@@ -225,6 +225,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
+require('keymaps').setup()
 
 -- [[ Configure and install plugins ]]
 --
@@ -487,8 +488,8 @@ require('lazy').setup({
       end, { noremap = true, silent = true, desc = 'Live grep in project' })
 
       vim.keymap.set('n', '<C-o>', function()
-        require('telescope.builtin').current_buffer_fuzzy_find()
-      end, { desc = 'Fuzzy search in current buffer', noremap = true, silent = true })
+        require('telescope.builtin').buffers()
+      end, { desc = 'Fuzzy search open buffers', noremap = true, silent = true })
 
       -- Ctrl+L = fuzzy search current buffer
       vim.keymap.set('n', '<C-l>', function()
