@@ -1065,11 +1065,10 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 vim.api.nvim_set_keymap('n', '<F5>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 
 -- Setup spellchecker
-vim.opt.spell = true
-vim.opt.spelllang = { 'en_us' }
-vim.opt.pumheight = 10
-vim.cmd 'highlight SpellBad cterm=underline gui=undercurl guisp=#6aaa6a'
-vim.cmd 'set spellfile=~/.config/nvim/spell/en.utf-8.add'
-return {
-  'nvim-tree/nvim-tree.lua',
-}
+vim.api.nvim_create_autocmd('BufRead,BufNewFile', {
+  pattern = '*',
+  callback = function()
+    vim.opt.spell = true
+    vim.opt.spelllang = { 'en_us' }
+  end,
+})
