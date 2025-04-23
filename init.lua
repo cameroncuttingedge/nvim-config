@@ -1065,10 +1065,17 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 vim.api.nvim_set_keymap('n', '<F5>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 
 -- Setup spellchecker
-vim.api.nvim_create_autocmd('BufRead,BufNewFile', {
+vim.api.nvim_create_autocmd('BufWinEnter', {
   pattern = '*',
   callback = function()
-    vim.opt.spell = true
-    vim.opt.spelllang = { 'en_us' }
+    vim.opt_local.spell = true
+    vim.opt_local.spelllang = { 'en_us' }
   end,
 })
+
+vim.cmd [[
+  highlight SpellBad gui=undercurl guisp=#6e6e6e
+  highlight SpellCap gui=undercurl guisp=#6e6e6e
+  highlight SpellRare gui=undercurl guisp=#6e6e6e
+  highlight SpellLocal gui=undercurl guisp=#6e6e6e
+]]
