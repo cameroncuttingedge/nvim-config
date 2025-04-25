@@ -16,5 +16,16 @@ return {
       },
       shade_terminals = true,
     }
+
+    -- Enable auto-read for external file changes
+    vim.opt.autoread = true
+
+    -- Run :checktime when ToggleTerm is hidden or closed
+    vim.api.nvim_create_autocmd({ 'BufLeave', 'TermLeave', 'TermClose' }, {
+      pattern = 'term://*toggleterm#*',
+      callback = function()
+        vim.cmd 'checktime'
+      end,
+    })
   end,
 }
