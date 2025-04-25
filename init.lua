@@ -424,19 +424,6 @@ require('lazy').setup({
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
-
-      local changed_files = function()
-        local git_cmd = vim.fn.systemlist 'git diff --name-only $(git merge-base HEAD origin/main)'
-        require('telescope.pickers')
-          .new({}, {
-            prompt_title = 'Changed Files',
-            finder = require('telescope.finders').new_table {
-              results = git_cmd,
-            },
-            sorter = require('telescope.config').values.generic_sorter {},
-          })
-          :find()
-      end
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
@@ -722,10 +709,18 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
-        -- rust_analyzer = {},
+        clangd = {},
+        gopls = {},
+        rust_analyzer = {},
+        yamllint = {},
+        earthlyls = {},
+        jsonlint = {},
+        pyright = {},
+        terraformls = {},
+        actionlint = {},
+        markdownlint = {},
+        shellcheck = {},
+        helm_ls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -1057,23 +1052,19 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 
 vim.api.nvim_set_keymap('n', '<F5>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 
--- Global spellcheck enforcement
-vim.opt.spell = true
-vim.opt.spelllang = { 'en_us' }
+-- State variable to track global spell enforcement
+local enforce_spell = true
 
--- Enforce spellcheck on every buffer, always
-vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufNewFile', 'BufEnter', 'InsertLeave' }, {
-  pattern = '*',
-  callback = function()
-    vim.opt_local.spell = true
-    vim.opt_local.spelllang = { 'en_us' }
-  end,
-})
+-- Function to apply spellcheck to all buffers
+vim.keymap.set('n', '<leader>sc', function()
+  vim.opt_local.spell = not vim.opt_local.spell:get()
+  local status = vim.opt_local.spell:get() and 'ON' or 'OFF'
+  vim.notify('Spellcheck: ' .. status, vim.log.levels.INFO, { title = 'Toggle' })
+end, { desc = '[S]pell [C]heck toggle' })
 
--- Make sure visual style is non-intrusive
 vim.cmd [[
-  highlight SpellBad gui=undercurl guisp=#6e6e6e
-  highlight SpellCap gui=undercurl guisp=#6e6e6e
-  highlight SpellRare gui=undercurl guisp=#6e6e6e
-  highlight SpellLocal gui=undercurl guisp=#6e6e6e
+  highlight SpellBad gui=undercurl cterm=underline guisp=Gray ctermfg=DarkGray
+  highlight SpellCap gui=undercurl cterm=underline guisp=Gray ctermfg=DarkGray
+  highlight SpellRare gui=undercurl cterm=underline guisp=Gray ctermfg=DarkGray
+  highlight SpellLocal gui=undercurl cterm=underline guisp=Gray ctermfg=DarkGray
 ]]
