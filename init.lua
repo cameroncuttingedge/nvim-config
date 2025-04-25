@@ -460,23 +460,16 @@ require('lazy').setup({
       vim.api.nvim_set_keymap('n', '<leader>fd', ':Telescope diagnostics<CR>', { noremap = true, silent = true })
       vim.api.nvim_set_keymap('n', '<leader>fm', ':Telescope marks<CR>', { noremap = true, silent = true })
       local changed_files = function()
-        -- Get the default branch from origin
-        local default_branch = vim.fn.systemlist("git remote show origin | grep 'HEAD branch' | awk '{print $NF}'")[1]
-
-        -- Fallback if default_branch isn't found
-        if not default_branch or default_branch == '' then
-          default_branch = 'main'
-        end
-
-        local git_cmd = vim.fn.systemlist('git diff --name-only $(git merge-base HEAD origin/' .. default_branch .. ')')
+        local results = vim.fn.systemlist 'git diff --name-only origin/main && git ls-files --others --exclude-standard'
 
         require('telescope.pickers')
           .new({}, {
             prompt_title = 'Changed Files',
             finder = require('telescope.finders').new_table {
-              results = git_cmd,
+              results = results,
             },
             sorter = require('telescope.config').values.generic_sorter {},
+            previewer = require('telescope.previewers').cat.new {},
           })
           :find()
       end
