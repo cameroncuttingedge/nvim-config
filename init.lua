@@ -1057,8 +1057,12 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 
 vim.api.nvim_set_keymap('n', '<F5>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 
--- Setup spellchecker
-vim.api.nvim_create_autocmd('BufWinEnter', {
+-- Global spellcheck enforcement
+vim.opt.spell = true
+vim.opt.spelllang = { 'en_us' }
+
+-- Enforce spellcheck on every buffer, always
+vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufNewFile', 'BufEnter', 'InsertLeave' }, {
   pattern = '*',
   callback = function()
     vim.opt_local.spell = true
@@ -1066,6 +1070,7 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
   end,
 })
 
+-- Make sure visual style is non-intrusive
 vim.cmd [[
   highlight SpellBad gui=undercurl guisp=#6e6e6e
   highlight SpellCap gui=undercurl guisp=#6e6e6e
