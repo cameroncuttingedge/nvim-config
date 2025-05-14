@@ -1,5 +1,4 @@
 --[[
-
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
 =====================================================================
@@ -136,7 +135,11 @@ vim.opt.updatetime = 250
 
 -- Decrease mapped sequence wait time
 vim.opt.timeoutlen = 300
-
+-- spaces
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
 -- Configure how new splits should be opened
 vim.opt.splitright = true
 vim.opt.splitbelow = true
@@ -264,18 +267,18 @@ require('lazy').setup({
   -- options to `gitsigns.nvim`.
   --
   -- See `:help gitsigns` to understand what the configuration keys do
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
-    opts = {
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
-    },
-  },
+  -- { -- Adds git related signs to the gutter, as well as utilities for managing changes
+  -- 	"lewis6991/gitsigns.nvim",
+  -- 	opts = {
+  -- 		signs = {
+  -- 			add = { text = "+" },
+  -- 			change = { text = "~" },
+  -- 			delete = { text = "_" },
+  -- 			topdelete = { text = "‾" },
+  -- 			changedelete = { text = "~" },
+  -- 		},
+  -- 	},
+  -- },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
@@ -467,9 +470,9 @@ require('lazy').setup({
         builtin.live_grep()
       end, { noremap = true, silent = true, desc = 'Live grep in project' })
 
-      vim.keymap.set('n', '<C-o>', function()
-        require('telescope.builtin').buffers()
-      end, { desc = 'Fuzzy search open buffers', noremap = true, silent = true })
+      -- vim.keymap.set("n", "<C-o>", function()
+      -- 	require("telescope.builtin").buffers()
+      -- end, { desc = "Fuzzy search open buffers", noremap = true, silent = true })
 
       -- Ctrl+L = fuzzy search current buffer
       vim.keymap.set('n', '<C-l>', function()
@@ -477,13 +480,13 @@ require('lazy').setup({
       end, { noremap = true, silent = true, desc = 'Fuzzy find in current buffer' })
       -- Slightly advanced example of overriding default behavior and theme
 
-      vim.keymap.set('n', '<leader>/', function()
-        -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-          winblend = 10,
-          previewer = false,
-        })
-      end, { desc = '[/] Fuzzily search in current buffer' })
+      -- vim.keymap.set("n", "<leader>/", function()
+      -- 	-- You can pass additional configuration to Telescope to change the theme, layout, etc.
+      -- 	builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+      -- 		winblend = 10,
+      -- 		previewer = false,
+      -- 	}))
+      -- end, { desc = "[/] Fuzzily search in current buffer" })
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
@@ -721,6 +724,7 @@ require('lazy').setup({
         markdownlint = {},
         shellcheck = {},
         helm_ls = {},
+        nil_ls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -923,7 +927,12 @@ require('lazy').setup({
   },
 
   -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  {
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = { signs = false },
+  },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
@@ -968,7 +977,19 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -976,7 +997,7 @@ require('lazy').setup({
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
+        additional_vim_regex_highlighting = true,
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
