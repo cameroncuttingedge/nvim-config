@@ -8,7 +8,7 @@ return {
     local directions = require('hop.hint').HintDirection
 
     -- Jump to word start using <leader>s
-    vim.keymap.set('n', '<leader>/', function()
+    vim.keymap.set('n', '<leader><leader>', function()
       hop.hint_words()
     end, { desc = 'Hop to word' })
 
