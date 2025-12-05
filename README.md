@@ -238,3 +238,77 @@ sudo pacman -S --noconfirm --needed gcc make git ripgrep fd unzip neovim
 ```
 </details>
 
+---
+
+## Custom Configuration
+
+Extends kickstart.nvim. Custom plugins in `lua/custom/plugins/`: gruvbox, toggleterm, hop, git-worktree, noice, nvim-tree, undotree, gitlinker
+
+**LSP Servers (via Mason):** clangd, gopls, rust_analyzer, pyright, terraformls, lua_ls, nil_ls, helm_ls, yamllint, jsonlint, actionlint, markdownlint, shellcheck, earthlyls
+
+### Keybindings
+
+Leader key: `<Space>`
+
+#### General
+
+| Key | Action |
+|-----|--------|
+| `<C-p>` | Find files |
+| `<C-f>` | Live grep |
+| `<leader>y` | Yazi file manager |
+| `<leader><leader>` | Hop to word |
+| `<F5>` | Toggle nvim-tree |
+| `<F6>` | Toggle undotree |
+| `<F7>` | Toggle indent guides |
+| `<C-\>` | Toggle floating terminal |
+
+#### Git
+
+| Key | Action |
+|-----|--------|
+| `<leader>gc` | Changed files (branch diff) |
+| `<leader>gpr` | Open PR in browser |
+| `<leader>gl` | Copy git link to clipboard |
+| `<leader>hs` | Stage hunk |
+| `<leader>hr` | Reset hunk |
+| `<leader>hp` | Preview hunk |
+
+#### Worktrees (`<leader>w`)
+
+| Key | Action |
+|-----|--------|
+| `<leader>wl` | List/switch worktrees |
+| `<leader>wc` | Create new worktree |
+| `<leader>wd` | Delete worktree (select + `<C-d>`) |
+
+---
+
+## Git Worktrees with Claude Code
+
+Worktrees let you work on multiple branches simultaneously without stashing. Each worktree is a separate directory - run parallel Claude Code sessions, one per branch.
+
+**No bare clone required.** Works with existing repos. Your `.claude` directories stay intact.
+
+### Usage
+
+```sh
+# Create worktrees as sibling directories
+git worktree add ../myrepo-feature -b feature
+git worktree add ../myrepo-bugfix -b bugfix
+
+# Run Claude in each (separate terminals)
+cd myrepo && claude              # main
+cd ../myrepo-feature && claude   # feature branch
+cd ../myrepo-bugfix && claude    # bugfix branch
+
+# When done, merge and clean up
+git merge feature && git merge bugfix
+git worktree remove ../myrepo-feature
+git worktree remove ../myrepo-bugfix
+```
+
+Global `~/.claude/CLAUDE.md` applies to all worktrees.
+
+See: [Git Worktree in Claude Code](https://claudecode.io/blog/git-worktree)
+
